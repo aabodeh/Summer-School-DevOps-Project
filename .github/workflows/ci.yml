@@ -77,3 +77,9 @@ jobs:
           kubectl --kubeconfig kubeconfig rollout restart deployment/frontend
           kubectl --kubeconfig kubeconfig rollout status deployment/backend
           kubectl --kubeconfig kubeconfig rollout status deployment/frontend
+      - name: Smoke test
+        run: |
+          kubectl --kubeconfig kubeconfig port-forward svc/frontend 8080:8080 &
+          sleep 3
+          curl -f http://localhost:8080/healthz
+          curl -f http://localhost:8080/api/random
