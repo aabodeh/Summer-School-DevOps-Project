@@ -77,6 +77,16 @@ jobs:
           kubectl --kubeconfig kubeconfig rollout restart deployment/frontend
           kubectl --kubeconfig kubeconfig rollout status deployment/backend
           kubectl --kubeconfig kubeconfig rollout status deployment/frontend
+
+  test:
+    needs: deploy
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: azure/setup-kubectl@v4
+      - name: Write kubeconfig
+        run: echo "${{ secrets.KUBECONFIG }}" | base64 -d > kubeconfig
       - name: Smoke test
         run: |
           kubectl --kubeconfig kubeconfig port-forward svc/frontend 8080:8080 &
