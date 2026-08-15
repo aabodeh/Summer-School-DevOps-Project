@@ -17,6 +17,9 @@ spec:
           image: ghcr.io/aabodeh/fortune-backend:latest
           ports:
             - containerPort: 9000
+          env:
+            - name: REDIS_DNS
+              value: redis
 ---
 apiVersion: v1
 kind: Service

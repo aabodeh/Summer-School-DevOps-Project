@@ -68,6 +68,7 @@ jobs:
         run: echo "${{ secrets.KUBECONFIG }}" | base64 -d > kubeconfig
       - name: Apply manifests
         run: |
+          kubectl --kubeconfig kubeconfig apply -f k8s/redis.yaml
           kubectl --kubeconfig kubeconfig apply -f k8s/backend.yaml
           kubectl --kubeconfig kubeconfig apply -f k8s/frontend.yaml
       - name: Roll out latest images
